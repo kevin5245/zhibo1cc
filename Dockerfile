@@ -1,9 +1,9 @@
 FROM node:20-alpine
 
 # 安装 nginx 容器组件、curl 与系统证书
-RUN apk add --no-cache nginx ca-certificates curl
+RUN apk add --no-cache nginx ca-certificates curl unzip
 
-# 全自动判断 CPU 架构（支持常见的 x86_64 服务器或 树莓派/甲骨文 ARM 架构），下载对应版本的 Xray-core
+# 全自动判断 CPU 架构，下载对应版本的 Xray-core
 RUN ARCH=$(uname -m) && \
     if [ "$ARCH" = "x86_64" ]; then XRAY_ARCH="64"; \
     elif [ "$ARCH" = "aarch64" ]; then XRAY_ARCH="arm64-v8a"; \
@@ -11,7 +11,7 @@ RUN ARCH=$(uname -m) && \
     curl -L -o /tmp/xray.zip "https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-${XRAY_ARCH}.zip" && \
     mkdir -p /opt/xray && \
     unzip /tmp/xray.zip -d /opt/xray && \
-    ln ( -s /opt/xray/xray /usr/local/bin/xray || ln -s /opt/xray/xray /usr/bin/xray ) && \
+    ln -sf /opt/xray/xray /usr/local/bin/xray && \
     rm -rf /tmp/xray.zip
 
 WORKDIR /app
