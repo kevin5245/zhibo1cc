@@ -1,0 +1,51 @@
+{
+  "log": {
+    "loglevel": "warning"
+  },
+  "inbounds": [
+    {
+      "port": 10808,
+      "listen": "127.0.0.1",
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": true
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "116.49.237.94",
+            "port": 10443,
+            "users": [
+              {
+                "id": "1551e5a8-70de-49aa-9a3a-0c34e59a712c",
+                "encryption": "none",
+                "level": 0
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "tls",
+        "tlsSettings": {
+          "allowInsecure": true,
+          "serverName": "kd.hdf.pp.ua",
+          "fingerprint": "random"
+        },
+        "wsSettings": {
+          "path": "/proxyip=116.49.237.94:10443",
+          "headers": {
+            "Host": "kd.hdf.pp.ua"
+          }
+        }
+      }
+    }
+  ]
+}
